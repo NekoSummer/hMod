@@ -19,16 +19,16 @@ public class Player extends LivingEntity {
     private es player;
     private int id = -1;
     private String prefix = "";
-    private ArrayList<String> commands = new ArrayList<>();
-    private ArrayList<String> groups = new ArrayList<>();
+    private final ArrayList<String> commands = new ArrayList<>();
+    private final ArrayList<String> groups = new ArrayList<>();
     private String[] ips = new String[]{""};
     private boolean ignoreRestrictions = false;
     private boolean admin = false;
     private boolean canModifyWorld = false;
     private boolean muted = false;
     private Inventory inventory, craftingTable, equipment;
-    private List<String> onlyOneUseKits = new ArrayList<>();
-    private Pattern badChatPattern = Pattern.compile("[^ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\[\\\\\\]^_'abcdefghijklmnopqrstuvwxyz{|}~\u2302\u00C7\u00FC\u00E9\u00E2\u00E4\u00E0\u00E5\u00E7\u00EA\u00EB\u00E8\u00EF\u00EE\u00EC\u00C4\u00C5\u00C9\u00E6\u00C6\u00F4\u00F6\u00F2\u00FB\u00F9\u00FF\u00D6\u00DC\u00F8\u00A3\u00D8\u00D7\u0192\u00E1\u00ED\u00F3\u00FA\u00F1\u00D1\u00AA\u00BA\u00BF\u00AE\u00AC\u00BD\u00BC\u00A1\u00AB\u00BB]");
+    private final List<String> onlyOneUseKits = new ArrayList<>();
+    private final Pattern badChatPattern = Pattern.compile("[^ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\[\\\\\\]^_'abcdefghijklmnopqrstuvwxyz{|}~\u2302\u00C7\u00FC\u00E9\u00E2\u00E4\u00E0\u00E5\u00E7\u00EA\u00EB\u00E8\u00EF\u00EE\u00EC\u00C4\u00C5\u00C9\u00E6\u00C6\u00F4\u00F6\u00F2\u00FB\u00F9\u00FF\u00D6\u00DC\u00F8\u00A3\u00D8\u00D7\u0192\u00E1\u00ED\u00F3\u00FA\u00F1\u00D1\u00AA\u00BA\u00BF\u00AE\u00AC\u00BD\u00BC\u00A1\u00AB\u00BB]");
 
     /**
      * Creates a player interface
@@ -92,14 +92,14 @@ public class Player extends LivingEntity {
             command(message);
         } else {
             if (isMuted()) {
-                sendMessage(Colors.Rose + "You are currently muted.");
+                sendMessage(HColors.RED + "You are currently muted.");
                 return;
             }
             if ((Boolean) etc.getLoader().callHook(PluginLoader.Hook.CHAT, new Object[]{player, message})) {
                 return;
             }
 
-            String chat = "<" + getColor() + getName() + Colors.White + "> " + message;
+            String chat = "<" + getColor() + getName() + HColors.WHITE + "> " + message;
             log.log(Level.INFO, "<" + getName() + "> " + message);
             etc.getServer().messageAll(chat);
         }
@@ -135,7 +135,7 @@ public class Player extends LivingEntity {
             switch (command_start) {
 
             case "/help":
-                List<String> availableCommands = new ArrayList<String>();
+                List<String> availableCommands = new ArrayList<>();
                 for (Entry<String, String> entry : etc.getCommands().entrySet()) {
                     if (canUseCommand(entry.getKey())) {
                         if (entry.getKey().equals("/kit") && !etc.getDataSource().hasKits()) {
@@ -410,7 +410,7 @@ public class Player extends LivingEntity {
                     Kit kit = etc.getDataSource().getKit(split[1]);
                     if (toGive != null) {
                         if (kit != null) {
-                            if (!isInGroup(kit.Group) && !kit.Group.equals("")) {
+                            if (!isInGroup(kit.Group) && !kit.Group.isEmpty()) {
                                 sendMessage(Colors.Rose + "That kit does not exist.");
                             } else if (onlyOneUseKits.contains(kit.Name)) {
                                 sendMessage(Colors.Rose + "You can only get this kit once per login.");
@@ -544,7 +544,7 @@ public class Player extends LivingEntity {
                             amount = 1024; // 16 stacks worth. More than enough.
                         }
                         boolean allowedItem = false;
-                        if (!etc.getInstance().getAllowedItems()[0].equals("") && (!canIgnoreRestrictions())) {
+                        if (!etc.getInstance().getAllowedItems()[0].isEmpty() && (!canIgnoreRestrictions())) {
                             for (String str : etc.getInstance().getAllowedItems()) {
                                 if (itemIdstr.equals(str)) {
                                     allowedItem = true;
@@ -553,7 +553,7 @@ public class Player extends LivingEntity {
                         } else {
                             allowedItem = true;
                         }
-                        if (!etc.getInstance().getDisallowedItems()[0].equals("") && !canIgnoreRestrictions()) {
+                        if (!etc.getInstance().getDisallowedItems()[0].isEmpty() && !canIgnoreRestrictions()) {
                             for (String str : etc.getInstance().getDisallowedItems()) {
                                 if (itemIdstr.equals(str)) {
                                     allowedItem = false;
@@ -566,22 +566,22 @@ public class Player extends LivingEntity {
                                 target.giveItem(itemId, amount);
 
                                 if (target.getName().equalsIgnoreCase(getName())) {
-                                    sendMessage(Colors.Rose + "There you go c:");
+                                    sendMessage(HColors.RED + "There you go c:");
                                 } else {
-                                    sendMessage(Colors.Rose + "Gift given! :D");
-                                    target.sendMessage(Colors.Rose + "Enjoy your gift! :D");
+                                    sendMessage(HColors.RED + "Gift given! :D");
+                                    target.sendMessage(HColors.RED + "Enjoy your gift! :D");
                                 }
                             } else if (!allowedItem && !canIgnoreRestrictions()) {
-                                sendMessage(Colors.Rose + "You are not allowed to spawn that item.");
+                                sendMessage(HColors.RED + "You are not allowed to spawn that item.");
                             }
                         } else {
-                            sendMessage(Colors.Rose + "No item with ID " + split[1]);
+                            sendMessage(HColors.RED + "No item with ID " + split[1]);
                         }
                     } catch (NumberFormatException localNumberFormatException) {
-                        sendMessage(Colors.Rose + "Improper ID and/or amount.");
+                        sendMessage(HColors.RED + "Improper ID and/or amount.");
                     }
                 } else {
-                    sendMessage(Colors.Rose + "Can't find user " + split[3]);
+                    sendMessage(HColors.RED + "Can't find user " + split[3]);
                 }
                 break;
 
@@ -621,7 +621,7 @@ public class Player extends LivingEntity {
 
             case "/banip":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /banip [player] <reason> (optional) NOTE: this permabans IPs.");
+                    sendMessage(HColors.RED + "Correct usage is: /banip [player] <reason> (optional) NOTE: this permabans IPs.");
                     return;
                 }
 
@@ -629,7 +629,7 @@ public class Player extends LivingEntity {
 
                 if (player != null) {
                     if (!hasControlOver(player)) {
-                        sendMessage(Colors.Rose + "You can't ban that user.");
+                        sendMessage(HColors.RED + "You can't ban that user.");
                         return;
                     }
 
@@ -639,7 +639,7 @@ public class Player extends LivingEntity {
                     etc.getLoader().callHook(PluginLoader.Hook.IPBAN, new Object[]{getUser(), player.getUser(), split.length >= 3 ? etc.combineSplit(2, split, " ") : ""});
 
                     log.log(Level.INFO, "IP Banning " + player.getName() + " (IP: " + player.getIP() + ")");
-                    sendMessage(Colors.Rose + "IP Banning " + player.getName() + " (IP: " + player.getIP() + ")");
+                    sendMessage(HColors.RED + "IP Banning " + player.getName() + " (IP: " + player.getIP() + ")");
 
                     if (split.length > 2) {
                         player.kick("IP Banned by " + getName() + ": " + etc.combineSplit(2, split, " "));
@@ -647,13 +647,13 @@ public class Player extends LivingEntity {
                         player.kick("IP Banned by " + getName() + ".");
                     }
                 } else {
-                    sendMessage(Colors.Rose + "Can't find user " + split[1] + ".");
+                    sendMessage(HColors.RED + "Can't find user " + split[1] + ".");
                 }
                 break;
 
             case "/ban":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /ban [player] <reason> (optional)");
+                    sendMessage(HColors.RED + "Correct usage is: /ban [player] <reason> (optional)");
                     return;
                 }
 
@@ -661,7 +661,7 @@ public class Player extends LivingEntity {
 
                 if (player != null) {
                     if (!hasControlOver(player)) {
-                        sendMessage(Colors.Rose + "You can't ban that user.");
+                        sendMessage(HColors.RED + "You can't ban that user.");
                         return;
                     }
 
@@ -676,36 +676,36 @@ public class Player extends LivingEntity {
                         player.kick("Banned by " + getName() + ".");
                     }
                     log.log(Level.INFO, "Banning " + player.getName());
-                    sendMessage(Colors.Rose + "Banning " + player.getName());
+                    sendMessage(HColors.RED + "Banning " + player.getName());
                 } else {
-                    // sendMessage(Colors.Rose + "Can't find user " + split[1] + ".");
+                    // sendMessage(HColors.RED + "Can't find user " + split[1] + ".");
                     etc.getServer().ban(split[1]);
                     log.log(Level.INFO, "Banning " + split[1]);
-                    sendMessage(Colors.Rose + "Banning " + split[1]);
+                    sendMessage(HColors.RED + "Banning " + split[1]);
                 }
                 break;
 
             case "/unban":
                 if (split.length != 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /unban [player]");
+                    sendMessage(HColors.RED + "Correct usage is: /unban [player]");
                     return;
                 }
                 etc.getServer().unban(split[1]);
-                sendMessage(Colors.Rose + "Unbanned " + split[1]);
+                sendMessage(HColors.RED + "Unbanned " + split[1]);
                 break;
 
             case "/unbanip":
                 if (split.length != 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /unbanip [ip]");
+                    sendMessage(HColors.RED + "Correct usage is: /unbanip [ip]");
                     return;
                 }
                 etc.getMCServer().f.d(split[1]);
-                sendMessage(Colors.Rose + "Unbanned " + split[1]);
+                sendMessage(HColors.RED + "Unbanned " + split[1]);
                 break;
 
             case "/kick":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /kick [player] <reason> (optional)");
+                    sendMessage(HColors.RED + "Correct usage is: /kick [player] <reason> (optional)");
                     return;
                 }
 
@@ -713,7 +713,7 @@ public class Player extends LivingEntity {
 
                 if (player != null) {
                     if (!hasControlOver(player)) {
-                        sendMessage(Colors.Rose + "You can't kick that user.");
+                        sendMessage(HColors.RED + "You can't kick that user.");
                         return;
                     }
 
@@ -725,15 +725,15 @@ public class Player extends LivingEntity {
                         player.kick("Kicked by " + getName() + ".");
                     }
                     log.log(Level.INFO, "Kicking " + player.getName());
-                    sendMessage(Colors.Rose + "Kicking " + player.getName());
+                    sendMessage(HColors.RED + "Kicking " + player.getName());
                 } else {
-                    sendMessage(Colors.Rose + "Can't find user " + split[1] + ".");
+                    sendMessage(HColors.RED + "Can't find user " + split[1] + ".");
                 }
                 break;
 
             case "/me":
                 if (isMuted()) {
-                    sendMessage(Colors.Rose + "You are currently muted.");
+                    sendMessage(HColors.RED + "You are currently muted.");
                     return;
                 }
                 if (split.length == 1) {
@@ -753,7 +753,7 @@ public class Player extends LivingEntity {
                 // really matters since it tries to get the highest point iirc.
 
                 log.info("Spawn position changed.");
-                sendMessage(Colors.Rose + "You have set the spawn to your current position.");
+                sendMessage(HColors.RED + "You have set the spawn to your current position.");
                 break;
 
             case "/spawn":
@@ -769,7 +769,7 @@ public class Player extends LivingEntity {
                 // really matters since it tries to get the highest point iirc.
 
                 log.info("Spawn position changed.");
-                sendMessage(Colors.Rose + "You have set the spawn to your current position.");
+                sendMessage(HColors.RED + "You have set the spawn to your current position.");
                 break;
 
             case "/home":
@@ -783,7 +783,7 @@ public class Player extends LivingEntity {
                 if (home != null) {
                     teleportTo(home.Location);
                 } else if (split.length > 1 && isAdmin()) {
-                    sendMessage(Colors.Rose + "That player home does not exist");
+                    sendMessage(HColors.RED + "That player home does not exist");
                 } else {
                     teleportTo(etc.getServer().getSpawnLocation());
                 }
@@ -791,7 +791,7 @@ public class Player extends LivingEntity {
 
             case "/warp":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /warp [warpname]");
+                    sendMessage(HColors.RED + "Correct usage is: /warp [warpname]");
                     return;
                 }
                 Player toWarp = this;
@@ -805,22 +805,22 @@ public class Player extends LivingEntity {
                 if (toWarp != null) {
                     if (warp != null) {
                         if (!isInGroup(warp.Group) && !warp.Group.equals("")) {
-                            sendMessage(Colors.Rose + "Warp not found.");
+                            sendMessage(HColors.RED + "Warp not found.");
                         } else {
                             toWarp.teleportTo(warp.Location);
-                            toWarp.sendMessage(Colors.Rose + "Woosh!");
+                            toWarp.sendMessage(HColors.RED + "Woosh!");
                         }
                     } else {
-                        sendMessage(Colors.Rose + "Warp not found");
+                        sendMessage(HColors.RED + "Warp not found");
                     }
                 } else {
-                    sendMessage(Colors.Rose + "Player not found.");
+                    sendMessage(HColors.RED + "Player not found.");
                 }
                 break;
 
             case "/listwarps":
                 if (split.length != 2 && split.length != 3) {
-                    sendMessage(Colors.Rose + "Available warps: " + Colors.White + etc.getDataSource().getWarpNames(this));
+                    sendMessage(HColors.RED + "Available warps: " + Colors.White + etc.getDataSource().getWarpNames(this));
                     return;
                 }
                 break;
@@ -828,9 +828,9 @@ public class Player extends LivingEntity {
             case "/setwarp":
                 if (split.length < 2) {
                     if (canIgnoreRestrictions()) {
-                        sendMessage(Colors.Rose + "Correct usage is: /setwarp [warpname] [group]");
+                        sendMessage(HColors.RED + "Correct usage is: /setwarp [warpname] [group]");
                     } else {
-                        sendMessage(Colors.Rose + "Correct usage is: /setwarp [warpname]");
+                        sendMessage(HColors.RED + "Correct usage is: /setwarp [warpname]");
                     }
                     return;
                 }
@@ -847,12 +847,12 @@ public class Player extends LivingEntity {
                     warp.Group = "";
                 }
                 etc.getInstance().setWarp(warp);
-                sendMessage(Colors.Rose + "Created warp point " + split[1] + ".");
+                sendMessage(HColors.RED + "Created warp point " + split[1] + ".");
                 break;
 
             case "/removewarp":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /removewarp [warpname]");
+                    sendMessage(HColors.RED + "Correct usage is: /removewarp [warpname]");
                     return;
                 }
                 warp = etc.getDataSource().getWarp(split[1]);
@@ -860,14 +860,14 @@ public class Player extends LivingEntity {
                     etc.getDataSource().removeWarp(warp);
                     sendMessage(Colors.Blue + "Warp removed.");
                 } else {
-                    sendMessage(Colors.Rose + "That warp does not exist");
+                    sendMessage(HColors.RED + "That warp does not exist");
                 }
                 break;
 
             case "/lighter":
                 if (MinecraftServer.b.containsKey(getName() + " lighter")) {
                     log.info(getName() + " failed to iron!");
-                    sendMessage(Colors.Rose + "You can't create another lighter again so soon");
+                    sendMessage(HColors.RED + "You can't create another lighter again so soon");
                 } else {
                     if (!canIgnoreRestrictions()) {
                         MinecraftServer.b.put(getName() + " lighter", Integer.valueOf(6000));
@@ -884,12 +884,12 @@ public class Player extends LivingEntity {
                     } else if (split[1].equalsIgnoreCase("night")) {
                         etc.getServer().setRelativeTime(13000);
                     } else if (split[1].equalsIgnoreCase("check")) {
-                        sendMessage(Colors.Rose + "The time is " + etc.getServer().getRelativeTime() + "! (RAW: " + etc.getServer().getTime() + ")");
+                        sendMessage(HColors.RED + "The time is " + etc.getServer().getRelativeTime() + "! (RAW: " + etc.getServer().getTime() + ")");
                     } else {
                         try {
                             etc.getServer().setRelativeTime(Long.parseLong(split[1]));
                         } catch (NumberFormatException ex) {
-                            sendMessage(Colors.Rose + "Please enter numbers, not letters.");
+                            sendMessage(HColors.RED + "Please enter numbers, not letters.");
                         }
                     }
                 } else if (split.length == 3) {
@@ -897,11 +897,11 @@ public class Player extends LivingEntity {
                         try {
                             etc.getServer().setTime(Long.parseLong(split[2]));
                         } catch (NumberFormatException ex) {
-                            sendMessage(Colors.Rose + "Please enter numbers, not letters.");
+                            sendMessage(HColors.RED + "Please enter numbers, not letters.");
                         }
                     }
                 } else {
-                    sendMessage(Colors.Rose + "Correct usage is: /time [time|'day|night|check|raw'] (rawtime)");
+                    sendMessage(HColors.RED + "Correct usage is: /time [time|'day|night|check|raw'] (rawtime)");
                     return;
                 }
                 break;
@@ -918,37 +918,37 @@ public class Player extends LivingEntity {
                 break;
 
             case "/listplugins":
-                sendMessage(Colors.Rose + "Plugins" + Colors.White + ": " + etc.getLoader().getPluginList());
+                sendMessage(HColors.RED + "Plugins" + Colors.White + ": " + etc.getLoader().getPluginList());
                 break;
 
             case "/reloadplugin":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /reloadplugin [plugin]");
+                    sendMessage(HColors.RED + "Correct usage is: /reloadplugin [plugin]");
                     return;
                 }
 
                 etc.getLoader().reloadPlugin(split[1]);
-                sendMessage(Colors.Rose + "Plugin reloaded.");
+                sendMessage(HColors.RED + "Plugin reloaded.");
                 break;
 
             case "/enableplugin":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /enableplugin [plugin]");
+                    sendMessage(HColors.RED + "Correct usage is: /enableplugin [plugin]");
                     return;
                 }
 
                 etc.getLoader().enablePlugin(split[1]);
-                sendMessage(Colors.Rose + "Plugin enabled.");
+                sendMessage(HColors.RED + "Plugin enabled.");
                 break;
 
             case "/disableplugin":
                 if (split.length < 2) {
-                    sendMessage(Colors.Rose + "Correct usage is: /disableplugin [plugin]");
+                    sendMessage(HColors.RED + "Correct usage is: /disableplugin [plugin]");
                     return;
                 }
 
                 etc.getLoader().disablePlugin(split[1]);
-                sendMessage(Colors.Rose + "Plugin disabled.");
+                sendMessage(HColors.RED + "Plugin disabled.");
                 break;
 
             case "/compass":
@@ -957,7 +957,7 @@ public class Player extends LivingEntity {
                     degreeRotation += 360.0;
                 }
 
-                sendMessage(Colors.Rose + "Compass: " + etc.getCompassPointForDirection(degreeRotation));
+                sendMessage(HColors.RED + "Compass: " + etc.getCompassPointForDirection(degreeRotation));
                 break;
 
             case "/motd":
@@ -968,11 +968,11 @@ public class Player extends LivingEntity {
 
             case "/spawnmob":
                 if (split.length == 1) {
-                    sendMessage(Colors.Rose + "Correct usage is: /spawnmob [name] <amount>");
+                    sendMessage(HColors.RED + "Correct usage is: /spawnmob [name] <amount>");
                     return;
                 }
                 if (!Mob.isValid(split[1])) {
-                    sendMessage(Colors.Rose + "Invalid mob. Name has to start with a capital like so: Pig");
+                    sendMessage(HColors.RED + "Invalid mob. Name has to start with a capital like so: Pig");
                     return;
                 }
 
@@ -988,8 +988,8 @@ public class Player extends LivingEntity {
                         }
                     } catch (NumberFormatException nfe) {
                         if (!Mob.isValid(split[2])) {
-                            sendMessage(Colors.Rose + "Invalid mob name or number of mobs.");
-                            sendMessage(Colors.Rose + "Mob names have to start with a capital like so: Pig");
+                            sendMessage(HColors.RED + "Invalid mob name or number of mobs.");
+                            sendMessage(HColors.RED + "Mob names have to start with a capital like so: Pig");
                         } else {
                             Mob mob = new Mob(split[1], getLocation());
                             mob.spawn(new Mob(split[2]));
@@ -999,7 +999,7 @@ public class Player extends LivingEntity {
                     try {
                         int mobnumber = Integer.parseInt(split[3]);
                         if (!Mob.isValid(split[2])) {
-                            sendMessage(Colors.Rose + "Invalid rider. Name has to start with a capital like so: Pig");
+                            sendMessage(HColors.RED + "Invalid rider. Name has to start with a capital like so: Pig");
                         } else {
                             for (int i = 0; i < mobnumber; i++) {
                                 Mob mob = new Mob(split[1], getLocation());
@@ -1007,7 +1007,7 @@ public class Player extends LivingEntity {
                             }
                         }
                     } catch (NumberFormatException nfe) {
-                        sendMessage(Colors.Rose + "Invalid number of mobs.");
+                        sendMessage(HColors.RED + "Invalid number of mobs.");
                     }
                 }
                 break;
@@ -1026,20 +1026,20 @@ public class Player extends LivingEntity {
                     inv.clearContents();
                     inv.updateInventory();
                     if (!target.getName().equals(getName())) {
-                        sendMessage(Colors.Rose + "Cleared " + target.getName() + "'s inventory.");
+                        sendMessage(HColors.RED + "Cleared " + target.getName() + "'s inventory.");
                     }
                 } else {
-                    sendMessage(Colors.Rose + "Target not found");
+                    sendMessage(HColors.RED + "Target not found");
                 }
                 break;
 
             case "/mspawn":
                 if (split.length != 2) {
-                    sendMessage(Colors.Rose + "You must specify what to change the mob spawner to.");
+                    sendMessage(HColors.RED + "You must specify what to change the mob spawner to.");
                     return;
                 }
                 if (!Mob.isValid(split[1])) {
-                    sendMessage(Colors.Rose + "Invalid mob specified.");
+                    sendMessage(HColors.RED + "Invalid mob specified.");
                     return;
                 }
 
@@ -1051,7 +1051,7 @@ public class Player extends LivingEntity {
                         ms.setSpawn(split[1]);
                     // block.setSpawnData(split[1]);
                 } else {
-                    sendMessage(Colors.Rose + "You are not targeting a mob spawner.");
+                    sendMessage(HColors.RED + "You are not targeting a mob spawner.");
                 }
                 break;
 
@@ -1071,7 +1071,7 @@ public class Player extends LivingEntity {
                 } else {
                     log.info(getName() + " tried command " + command);
                     if (etc.getInstance().showUnknownCommand()) {
-                        sendMessage(Colors.Rose + "Unknown command");
+                        sendMessage(HColors.RED + "Unknown command");
                     }
                 }
                 break;
@@ -1083,7 +1083,7 @@ public class Player extends LivingEntity {
             // overflow or something
             log.log(Level.SEVERE, "Exception in command handler (Report this to hey0 unless you did something dumb like enter letters as numbers):", ex);
             if (isAdmin()) {
-                sendMessage(Colors.Rose + "Exception occured. Check the server for more info.");
+                sendMessage(HColors.RED + "Exception occured. Check the server for more info.");
             }
         }
     }
@@ -1571,7 +1571,7 @@ public class Player extends LivingEntity {
     /**
      * Sets the user. Don't use this.
      *
-     * @param er
+     * @param es
      */
     public void setUser(es es) {
         this.player = es;
