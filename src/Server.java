@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.MinecraftServer;
@@ -9,7 +8,7 @@ import net.minecraft.server.MinecraftServer;
  */
 public class Server {
 
-    private MinecraftServer server;
+    private final MinecraftServer server;
 
     /**
      * Creates a server

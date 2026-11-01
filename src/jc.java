@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,21 +7,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.minecraft.server.MinecraftServer;
 
-public class jc extends ex
-        implements et {
+public class jc extends ex implements et {
 
     public static Logger a = Logger.getLogger("Minecraft");
     public bf b;
     public boolean c = false;
-    private MinecraftServer d;
-    private eo e;
+    private final MinecraftServer d;
+    private final eo e;
     private int f = 0;
     private double g;
     private double h;
     private double i;
     private boolean j = true;
     private hh k = null;
-    private List<String> onlyOneUseKits = new ArrayList<String>();
+    private final List<String> onlyOneUseKits = new ArrayList<String>();
 
     public jc(MinecraftServer paramMinecraftServer, bf parambf, eo parameo) {
         this.d = paramMinecraftServer;

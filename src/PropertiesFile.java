@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,8 +13,8 @@ import java.util.logging.Logger;
 public final class PropertiesFile {
 
     private static final Logger log = Logger.getLogger("Minecraft");
-    private Properties properties;
-    private String fileName;
+    private final Properties properties;
+    private final String fileName;
 
     /**
      * Creates or opens a properties file using specified filename

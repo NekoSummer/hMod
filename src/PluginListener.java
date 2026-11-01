@@ -6,8 +6,7 @@ public abstract class PluginListener {
     /**
      * Priority - Used for priority for plugin listeners
      */
-    public enum Priority
-    {
+    public enum Priority {
         /**
          * Highly critical for hooks that absolutely must occur before any others.  Use carefully.
          */

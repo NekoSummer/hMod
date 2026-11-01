@@ -1,23 +1,19 @@
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class jj
-        implements br {
+public class jj implements br {
 
-    private Set a = new HashSet();
-    private jn b;
-    private br c;
-    private at d;
-    private Map e = new HashMap();
-    private List f = new ArrayList();
-    private es g;
+    private final Set a = new HashSet();
+    private final jn b;
+    private final br c;
+    private final at d;
+    private final Map e = new HashMap();
+    private final List f = new ArrayList();
+    private final es g;
 
     public jj(es parames, at paramat, br parambr) {
         this.b = new jn(parames, new byte[32768], 0, 0);

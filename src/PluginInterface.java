@@ -1,7 +1,10 @@
-public interface PluginInterface
-{
-	public String getName();
-	public int getNumParameters();
-	public String checkParameters(Object[] parameters);
-	public Object run(Object[] parameters);
+public interface PluginInterface {
+
+	 String getName();
+
+	 int getNumParameters();
+
+	 String checkParameters(Object[] parameters);
+
+	 Object run(Object[] parameters);
 }
