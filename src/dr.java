@@ -1,6 +1,5 @@
 
-public class dr extends av
-        implements jx {
+public class dr extends av implements jx {
 
     private hh[] e = new hh[3];
     private int f = 0;

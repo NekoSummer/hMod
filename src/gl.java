@@ -15,15 +15,15 @@ public class gl {
 
     public static Logger a = Logger.getLogger("Minecraft");
     public List b = new ArrayList();
-    private MinecraftServer c;
-    private ia d;
-    private int e;
-    private Set f = new HashSet();
-    private Set g = new HashSet();
-    private Set h = new HashSet();
-    private File i;
-    private File j;
-    private File k;
+    private final MinecraftServer c;
+    private final ia d;
+    private final int e;
+    private final Set f = new HashSet();
+    private final Set g = new HashSet();
+    private final Set h = new HashSet();
+    private final File i;
+    private final File j;
+    private final File k;
     private cw l;
 
     public gl(MinecraftServer paramMinecraftServer) {

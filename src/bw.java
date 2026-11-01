@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import net.minecraft.server.MinecraftServer;
 
 public class bw extends Thread {
-    private MinecraftServer server;
+    private final MinecraftServer server;
 
     public bw(MinecraftServer paramMinecraftServer) {
         this.server = paramMinecraftServer;

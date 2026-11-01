@@ -3,7 +3,7 @@
  * @author James
  */
 public class Chest extends ItemArray implements ComplexBlock {
-    private hv chest;
+    private final hv chest;
 
     /**
      * Creates a chest interface

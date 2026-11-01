@@ -28,11 +28,11 @@ public class etc {
     private String[] itemSpawnBlacklist = null;
     private String[] motd = null;
     private boolean saveHomes = true;
-    private boolean firstLoad = true;
+    private final boolean firstLoad = true;
     private boolean whitelistEnabled = false;
     private int playerLimit = 20;
     private int spawnProtectionSize = 16;
-    private LinkedHashMap<String, String> commands = new LinkedHashMap<String, String>();
+    private final LinkedHashMap<String, String> commands = new LinkedHashMap<String, String>();
     private String dataSourceType;
     private DataSource dataSource;
     private PropertiesFile properties;

@@ -3,7 +3,7 @@
  * @author James
  */
 public class Furnace extends ItemArray implements ComplexBlock {
-    private dr furnace;
+    private final dr furnace;
 
     /**
      * Creates a furnace interface

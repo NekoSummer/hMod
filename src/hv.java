@@ -1,6 +1,4 @@
-
-public class hv extends av
-        implements jx {
+public class hv extends av implements jx {
 
     private hh[] e = new hh[36];
 

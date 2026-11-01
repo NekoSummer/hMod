@@ -4,8 +4,8 @@ import java.util.Map;
 
 public class av {
 
-    private static Map e = new HashMap();
-    private static Map f = new HashMap();
+    private static final Map e = new HashMap();
+    private static final Map f = new HashMap();
     public el a;
     public int b;
     public int c;
