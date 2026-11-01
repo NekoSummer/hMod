@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Minecraft_Mod" default="build" basedir=".">
-    <description>Builds, tests, and runs the project Minecraft_Mod.</description>
+    <description description="Builds, tests, and runs the project Minecraft_Mod."/>
 
     <property name="src-dir" location="src/"/>
     <property name="dist-dir" location="target"/>
@@ -13,8 +13,9 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src-dir}" destdir="${classes-dir}" includeantruntime="false"
-               source="8" target="8" release="8" encoding="UTF-8" classpath="${jars}"/>
+        <javac srcdir="${src-dir}" destdir="${classes-dir}"
+               includeantruntime="false" source="8" target="8"
+               encoding="UTF-8" classpath="${jars}"/>
     </target>
 
     <target name="build" depends="compile">
